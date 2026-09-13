@@ -263,7 +263,7 @@
         var request;
         if (backend === "netlify") {
           var netlifyData = new FormData(form);
-          request = fetch("/", {
+          request = fetch(window.location.pathname, {
             method: "POST",
             headers: {
               "Content-Type": "application/x-www-form-urlencoded"
