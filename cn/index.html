@@ -306,6 +306,9 @@
 
         <form
           class="form-card"
+          name="waitlist"
+          data-netlify="true"
+          netlify-honeypot="website"
           data-waitlist-form
           data-success-text="你已加入 PlayTalk 内测名单。我们会在 24 小时内发送第一局体验链接。"
           data-error-text="提交失败，请稍后重试，或直接发送邮件到 hello@playtalk.gg。"
@@ -363,6 +366,7 @@
             </label>
           </div>
 
+          <input type="hidden" name="form-name" value="waitlist">
           <input type="hidden" name="language" value="zh-CN">
           <input type="hidden" name="page_variant" value="a">
           <input type="hidden" name="utm_source" value="">

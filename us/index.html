@@ -308,6 +308,9 @@
 
         <form
           class="form-card"
+          name="waitlist"
+          data-netlify="true"
+          netlify-honeypot="website"
           data-waitlist-form
           data-success-text="You’re on the PlayTalk beta list. We’ll send your first quest link within 24 hours."
           data-error-text="Something went wrong. Please try again or email hello@playtalk.gg."
@@ -365,6 +368,7 @@
             </label>
           </div>
 
+          <input type="hidden" name="form-name" value="waitlist">
           <input type="hidden" name="language" value="en">
           <input type="hidden" name="page_variant" value="a">
           <input type="hidden" name="utm_source" value="">

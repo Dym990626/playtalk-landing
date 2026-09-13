@@ -12,6 +12,11 @@
   var STORAGE_KEY = "playtalk_attribution_v1";
   var VARIANT_KEY = "playtalk_variant_v1";
 
+  function getBackend() {
+    if (CONFIG.formBackend) return CONFIG.formBackend;
+    return CONFIG.formEndpoint ? "custom" : "local";
+  }
+
   function readParams() {
     var params = new URLSearchParams(window.location.search);
     var data = {};
@@ -189,7 +194,9 @@
     document.querySelectorAll("[data-waitlist-form]").forEach(function (form) {
       applyAttribution(form);
 
-      if (!CONFIG.formEndpoint) {
+      var backend = getBackend();
+
+      if (backend === "local") {
         setFormStatus(form, "pending", form.dataset.demoText || "Demo mode: configure formEndpoint before collecting leads.");
       }
 
@@ -245,7 +252,7 @@
           });
         }
 
-        if (!CONFIG.formEndpoint) {
+        if (backend === "local") {
           saveLocalSubmission(payload);
           window.setTimeout(function () {
             finish(true);
@@ -253,14 +260,28 @@
           return;
         }
 
-        fetch(CONFIG.formEndpoint, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json"
-          },
-          body: JSON.stringify(payload)
-        })
+        var request;
+        if (backend === "netlify") {
+          var netlifyData = new FormData(form);
+          request = fetch("/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: new URLSearchParams(netlifyData).toString()
+          });
+        } else {
+          request = fetch(CONFIG.formEndpoint, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json"
+            },
+            body: JSON.stringify(payload)
+          });
+        }
+
+        request
           .then(function (response) {
             if (!response.ok) throw new Error("Request failed with " + response.status);
             finish(true);

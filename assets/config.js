@@ -11,6 +11,7 @@
  * submissions are stored in the visitor's browser only and are NOT sent to you.
  */
 window.PLAY_TALK_CONFIG = {
+  formBackend: "netlify",
   formEndpoint: "",
   contactEmail: "hello@playtalk.gg",
   posthogKey: "",
